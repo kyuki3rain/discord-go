@@ -51,7 +51,7 @@ func handleWebhook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cmd := exec.Command("git", "pull")
+	cmd = exec.Command("git", "pull")
 	err = cmd.Run()
 	if err != nil {
 		log.Printf("Deployment script failed: %s", err)
