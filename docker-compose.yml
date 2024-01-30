@@ -9,7 +9,7 @@ services:
     restart: always # コンテナを自動起動
     volumes:
       - .:/go/src/app # マウントディレクトリ
-      - ~/.ssh/id_ed25519:/root/.ssh/id_ed25519 # SSH秘密鍵
+      - ${SSH_KEY_DIR}/${SSH_KEY_NAME}:/root/.ssh/${SSH_KEY_NAME} # SSH秘密鍵
   ngrok:
     image: ngrok/ngrok:latest
     depends_on:
