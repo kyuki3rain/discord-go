@@ -1,4 +1,4 @@
-name: Deploy Webhook
+name: Deploy to production
 
 on:
   push:
@@ -8,6 +8,8 @@ on:
 jobs:
   webhook:
     runs-on: ubuntu-latest
+    environment:
+      name: production
     steps:
       - name: Trigger Webhook
         run: |
