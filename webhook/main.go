@@ -3,15 +3,18 @@ package main
 import (
 	"crypto/hmac"
 	"crypto/sha256"
-	"flag"
 	"fmt"
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"os/exec"
+
+	"github.com/joho/godotenv"
 )
 
 func varifySignature(message, providedSignature []byte) bool {
+	SecretKey := os.Getenv("WEBHOOK_SECRET")
 	secret := []byte(SecretKey)
 	mac := hmac.New(sha256.New, secret)
 	mac.Write(message)
@@ -52,16 +55,14 @@ func handleWebhook(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Deployment script succeeded"))
 }
 
-var (
-	SecretKey string
-)
-
-func init() {
-	flag.StringVar(&SecretKey, "k", "", "Secret Key")
-	flag.Parse()
-}
-
 func main() {
+	err := godotenv.Load(".env")
+
+	// もし err がnilではないなら、"読み込み出来ませんでした"が出力されます。
+	if err != nil {
+		fmt.Printf("読み込み出来ませんでした: %v", err)
+	}
+
 	http.HandleFunc("/webhook", handleWebhook)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
