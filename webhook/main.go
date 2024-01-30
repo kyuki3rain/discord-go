@@ -43,16 +43,9 @@ func handleWebhook(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Printf("Received webhook: %s\n", string(body))
 
-	cmd := exec.Command("git", "checkout", "-f", "main")
+	cmd := exec.Command("/bin/sh", "./deploy.sh")
 	err = cmd.Run()
-	if err != nil {
-		log.Printf("reset script failed: %s", err)
-		http.Error(w, "reset script failed", http.StatusInternalServerError)
-		return
-	}
-
-	cmd = exec.Command("git", "pull")
-	err = cmd.Run()
+	log.Println(cmd.Stdout)
 	if err != nil {
 		log.Printf("Deployment script failed: %s", err)
 		http.Error(w, "Deployment script failed", http.StatusInternalServerError)
