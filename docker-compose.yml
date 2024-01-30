@@ -3,12 +3,14 @@ services:
     build: ./docker/bot # ビルドに使うDockerファイルのパス
     restart: always # コンテナを自動起動
     volumes:
-      - ./bot:/go/src/app # マウントディレクトリ
+      - .:/go/src/app # マウントディレクトリ
   webhook:
     build: ./docker/webhook # ビルドに使うDockerファイルのパス
     restart: always # コンテナを自動起動
+    ports:
+      - 8080:8080 # ポートフォワード
     volumes:
-      - ./webhook:/go/src/app # マウントディレクトリ
+      - .:/go/src/app # マウントディレクトリ
   tunnel:
     restart: always # コンテナを自動起動
     image: cloudflare/cloudflared

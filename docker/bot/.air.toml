@@ -9,19 +9,19 @@ tmp_dir = "tmp"
 # Array of commands to run before each build
 pre_cmd = ["echo 'hello air' > pre_cmd.txt"]
 # Just plain old shell command. You could use `make` as well.
-cmd = "go build -o ./bin ."
+cmd = "go build -buildvcs=false -o ./bin/bot ./bot"
 # Array of commands to run after ^C
 post_cmd = ["echo 'hello air' > post_cmd.txt"]
 # Binary file yields from `cmd`.
-bin = "bin"
+bin = "bin/bot"
 # Customize binary, can setup environment variables when run your app.
-full_bin = "APP_ENV=dev APP_USER=air ./bin"
+full_bin = "APP_ENV=dev APP_USER=air ./bin/bot"
 # Watch these filename extensions.
 include_ext = ["go"]
 # Ignore these filename extensions or directories.
 exclude_dir = ["bin"]
 # Watch these directories if you specified.
-include_dir = []
+include_dir = ["bot"]
 # Watch these files.
 include_file = []
 # Exclude files.
@@ -33,7 +33,7 @@ exclude_unchanged = true
 # Follow symlink for directories
 follow_symlink = true
 # This log file places in your tmp_dir.
-log = "air.log"
+log = "bot.air.log"
 # Poll files for changes instead of using fsnotify.
 poll = false
 # Poll interval (defaults to the minimum interval of 500ms).
