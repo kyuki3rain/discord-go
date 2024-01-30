@@ -14,7 +14,7 @@ import (
 )
 
 func varifySignature(message, providedSignature []byte) bool {
-	SecretKey := os.Getenv("WEBHOOK_SECRET")
+	SecretKey := os.Getenv("SECRET_KEY")
 	secret := []byte(SecretKey)
 	mac := hmac.New(sha256.New, secret)
 	mac.Write(message)
@@ -43,6 +43,14 @@ func handleWebhook(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Printf("Received webhook: %s\n", string(body))
 
+	cmd := exec.Command("git", "checkout", "-f", "main")
+	err = cmd.Run()
+	if err != nil {
+		log.Printf("reset script failed: %s", err)
+		http.Error(w, "reset script failed", http.StatusInternalServerError)
+		return
+	}
+
 	cmd := exec.Command("git", "pull")
 	err = cmd.Run()
 	if err != nil {
@@ -50,6 +58,7 @@ func handleWebhook(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Deployment script failed", http.StatusInternalServerError)
 		return
 	}
+
 	log.Println("Deployment script succeeded")
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Deployment script succeeded"))
