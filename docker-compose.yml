@@ -7,13 +7,16 @@ services:
   webhook:
     build: ./docker/webhook # ビルドに使うDockerファイルのパス
     restart: always # コンテナを自動起動
-    ports:
-      - 8080:8080 # ポートフォワード
     volumes:
       - .:/go/src/app # マウントディレクトリ
-  tunnel:
-    restart: always # コンテナを自動起動
-    image: cloudflare/cloudflared
-    command: tunnel run
+  ngrok:
+    image: ngrok/ngrok:latest
+    depends_on:
+      - webhook
+    restart: unless-stopped
+    command:
+      - "http"
+      - "--domain=${NGROK_DOMAIN}"
+      - "webhook:8080"
     environment:
-      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
