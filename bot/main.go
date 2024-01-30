@@ -71,4 +71,8 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if m.Content == "おはよう" {
 		s.ChannelMessageSend(m.ChannelID, "おはよう！")
 	}
+
+	if m.Content == "こんばんは" {
+		s.ChannelMessageSend(m.ChannelID, "こんばんは！")
+	}
 }
