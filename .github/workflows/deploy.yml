@@ -1,0 +1,14 @@
+name: Deploy Webhook
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  webhook:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Webhook
+        run: |
+          curl -X POST -H "Content-Type: application/json" -H "X-Hub-Signature-256: sha256=$(echo -n ${{ secrets.WEBHOOK_SECRET }})" -d '{"ref": "refs/heads/main"}' --fail ${{ secrets.NGROK_DOMAIN }}/webhook

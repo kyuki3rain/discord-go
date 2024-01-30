@@ -43,7 +43,7 @@ func handleWebhook(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Printf("Received webhook: %s\n", string(body))
 
-	cmd := exec.Command("/bin/bash", "./deploy.sh")
+	cmd := exec.Command("git", "pull")
 	err = cmd.Run()
 	if err != nil {
 		log.Printf("Deployment script failed: %s", err)
