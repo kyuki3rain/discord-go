@@ -45,7 +45,6 @@ func handleWebhook(w http.ResponseWriter, r *http.Request) {
 
 	cmd := exec.Command("/bin/sh", "./deploy.sh")
 	err = cmd.Run()
-	log.Println(cmd.Stdout)
 	if err != nil {
 		log.Printf("Deployment script failed: %s", err)
 		http.Error(w, "Deployment script failed", http.StatusInternalServerError)
