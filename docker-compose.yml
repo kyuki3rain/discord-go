@@ -7,8 +7,11 @@ services:
   webhook:
     build: ./docker/webhook # ビルドに使うDockerファイルのパス
     restart: always # コンテナを自動起動
+    environment:
+      - SSH_AUTH_SOCK="/tmp/ssh-auth.sock"
     volumes:
       - .:/go/src/app # マウントディレクトリ
+      - "/run/host-services/ssh-auth.sock:/tmp/ssh-auth.sock" # ssh-agentのソケットファイルをマウント
   ngrok:
     image: ngrok/ngrok:latest
     depends_on:
